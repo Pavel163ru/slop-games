@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11100f">
+  <title>Спрайты — Dungeon Match</title>
+  <link rel="stylesheet" href="css/sprite-viewer.css">
+  <script src="js/sprites.js" defer></script>
+  <script src="js/sprite-viewer.js" defer></script>
+</head>
+<body data-background="checker">
+  <header class="topbar">
+    <a class="back-link" href="index.html" aria-label="На главную">← <span>Dungeon Match</span></a>
+    <span class="offline-badge"><span class="status-dot"></span> Работает офлайн</span>
+  </header>
+
+  <main class="page-shell">
+    <section class="intro">
+      <p class="eyebrow">БИБЛИОТЕКА ИГРОВЫХ РЕСУРСОВ</p>
+      <h1>Просмотр спрайтов</h1>
+      <p class="intro-copy">Векторные иллюстрации подземелья. Выбери категорию, найди ресурс по имени и проверь, как он выглядит на разных фонах.</p>
+      <div class="intro-note"><span aria-hidden="true">✦</span> Все изображения загружаются с диска — интернет и сервер не нужны.</div>
+    </section>
+
+    <section class="toolbar" aria-label="Настройки каталога">
+      <div class="search-wrap">
+        <label class="sr-only" for="sprite-search">Поиск спрайтов</label>
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="sprite-search" type="search" placeholder="Поиск: лич, броня, зелье…" autocomplete="off">
+        <kbd>/</kbd>
+      </div>
+      <div class="toolbar-bottom">
+        <nav class="filters" id="category-filters" aria-label="Категории спрайтов"></nav>
+        <div class="view-options">
+          <div class="background-options" role="group" aria-label="Фон предпросмотра">
+            <button class="background-button is-active" type="button" data-background-choice="checker" aria-label="Шахматный фон" aria-pressed="true" title="Шахматный фон">▦</button>
+            <button class="background-button" type="button" data-background-choice="dark" aria-label="Тёмный фон" aria-pressed="false" title="Тёмный фон">◐</button>
+            <button class="background-button" type="button" data-background-choice="light" aria-label="Светлый фон" aria-pressed="false" title="Светлый фон">◑</button>
+          </div>
+          <label class="zoom-control" for="sprite-size">
+            <span>Размер</span>
+            <input id="sprite-size" type="range" min="56" max="112" value="84">
+            <output id="sprite-size-value" for="sprite-size">84px</output>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <div class="results-line"><span id="results-count" aria-live="polite"></span><span class="format-hint">SVG · прозрачный фон · 128 × 128</span></div>
+    <section class="sprite-grid" id="sprite-grid" aria-label="Список спрайтов"></section>
+    <p class="empty-state" id="empty-state" hidden>Ничего не найдено. Попробуй изменить запрос или категорию.</p>
+  </main>
+
+  <footer class="page-footer">
+    <span>Dungeon Match <span class="footer-separator">/</span> Sprite viewer</span>
+    <a href="README.md">Документация проекта ↗</a>
+  </footer>
+  <noscript><p class="noscript">Для отображения каталога включи JavaScript в браузере.</p></noscript>
+</body>
+</html>

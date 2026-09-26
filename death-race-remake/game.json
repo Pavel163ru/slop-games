@@ -1,0 +1,11 @@
+{
+  "slug": "death-race-remake",
+  "title": "Death Race",
+  "description": "Ремейк NES-классики 1990: бронемашина, гремлины, вертолёты и ракетные шахты.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#e04836",
+  "order": 12,
+  "model": "GLM 5.3 flash",
+  "date": "2026-09"
+}

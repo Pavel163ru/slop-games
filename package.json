@@ -1,0 +1,13 @@
+{
+  "name": "slop-games-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "deploy": "node deploy.mjs"
+  },
+  "dependencies": {
+    "basic-ftp": "^6.2.0"
+  }
+}

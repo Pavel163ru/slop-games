@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dead Run</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <canvas id="gameCanvas" width="960" height="640"></canvas>
+
+    <!-- Scripts в правильном порядке, без ES modules -->
+    <script src="js/input.js" defer></script>
+    <script src="js/audio.js" defer></script>
+    <script src="js/level/generator.js" defer></script>
+    <script src="js/level/renderer.js" defer></script>
+    <script src="js/renderer.js" defer></script>
+    <script src="js/entities/player.js" defer></script>
+    <script src="js/entities/zombie.js" defer></script>
+    <script src="js/entities/item.js" defer></script>
+    <script src="js/combat.js" defer></script>
+    <script src="js/game.js" defer></script>
+    <script src="js/main.js" defer></script>
+</body>
+</html>

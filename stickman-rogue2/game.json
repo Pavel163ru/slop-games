@@ -1,0 +1,11 @@
+{
+  "slug": "stickman-rogue2",
+  "title": "Stickman Rogue",
+  "description": "A fast-paced rogue-lite survival game fighting endless waves of stickman zombies.",
+  "type": "build",
+  "entry": "index.html",
+  "accent": "#f59e0b",
+  "order": 5,
+  "model": "Gemini",
+  "date": "2025-11"
+}

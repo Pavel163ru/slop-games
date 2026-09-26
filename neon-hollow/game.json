@@ -1,0 +1,11 @@
+{
+  "slug": "neon-hollow",
+  "title": "Neon Hollow",
+  "description": "A self-contained neon roguelite packed into a single HTML file.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#22d3ee",
+  "order": 3,
+  "model": "Web GPT Work Sol",
+  "date": "2026-08"
+}

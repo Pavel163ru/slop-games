@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Перекуп 🏎️ — Симулятор автоперекупа</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Стартовый экран -->
+<div id="start-screen">
+  <div class="start-inner">
+    <div class="start-logo">🏎️</div>
+    <h1 class="start-title">ПЕРЕКУП</h1>
+    <p class="start-tag">Симулятор автоперекупа</p>
+    <div id="start-continue-info" class="start-save hidden"></div>
+    <div class="start-buttons">
+      <button id="btn-continue" class="btn btn-primary start-btn hidden">▶ Продолжить</button>
+      <button id="btn-newgame" class="btn start-btn">＋ Новая игра</button>
+    </div>
+    <p class="start-foot">Покупай дёшево · чини · продавай дороже</p>
+  </div>
+</div>
+
+<div id="game" class="hidden">
+  <!-- Верхняя панель -->
+  <header id="topbar">
+    <div class="logo">🏎️ <span>ПЕРЕКУП</span></div>
+    <div class="stats">
+      <div class="stat" title="Наличные"><span class="ic">💵</span><b id="stat-cash">—</b></div>
+      <div class="stat" title="Долг по кредиту"><span class="ic">🏦</span><b id="stat-debt">—</b></div>
+      <div class="stat" title="Репутация"><span class="ic">⭐</span><b id="stat-rep">—</b></div>
+      <div class="stat" title="Текущий город"><span class="ic">🏙️</span><b id="stat-city">—</b></div>
+      <div class="stat" title="День"><span class="ic">📅</span><b id="stat-day">—</b></div>
+      <div class="stat" title="Машин в гараже"><span class="ic">🚗</span><b id="stat-garage">—</b></div>
+    </div>
+    <button id="btn-nextday" class="btn btn-day">Следующий день →</button>
+  </header>
+
+  <!-- Навигация -->
+  <nav id="tabs">
+    <button class="tab active" data-screen="market">🏪 Рынок</button>
+    <button class="tab" data-screen="garage">🔧 Гараж</button>
+    <button class="tab" data-screen="auction">🔨 Аукцион</button>
+    <button class="tab" data-screen="city">🏢 Город</button>
+    <button class="tab" data-screen="map">🗺️ Карта</button>
+    <button class="tab" data-screen="bank">🏦 Банк</button>
+    <button class="tab" data-screen="info">📊 Статус</button>
+  </nav>
+
+  <!-- Контент -->
+  <main id="content">
+    <section id="screen-market" class="screen active"></section>
+    <section id="screen-garage" class="screen"></section>
+    <section id="screen-auction" class="screen"></section>
+    <section id="screen-city" class="screen"></section>
+    <section id="screen-map" class="screen"></section>
+    <section id="screen-bank" class="screen"></section>
+    <section id="screen-info" class="screen"></section>
+  </main>
+
+  <!-- Лента событий -->
+  <aside id="log">
+    <h3>📰 Лента</h3>
+    <ul id="log-list"></ul>
+  </aside>
+</div>
+
+<!-- Модальное окно -->
+<div id="modal-overlay" class="hidden">
+  <div id="modal">
+    <button id="modal-close">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Тосты -->
+<div id="toasts"></div>
+
+<script src="game.js"></script>
+</body>
+</html>

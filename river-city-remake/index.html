@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>РЕЧНОЙ ГОРОД: РАЗБОРКИ</title>
+<style>
+  :root { --s: 3; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #0a0a12;
+    color: #e8e8f0;
+    font-family: "Courier New", ui-monospace, monospace;
+    overflow: hidden;
+  }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+
+  #wrap {
+    position: relative;
+    background: #000;
+    box-shadow: 0 0 0 calc(var(--s) * 1px) #2a2a44, 0 0 calc(var(--s) * 12px) rgba(0,0,0,.9);
+  }
+  #wrap canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+  #game { image-rendering: pixelated; image-rendering: crisp-edges; }
+  #fx { pointer-events: none; }
+
+  /* ---------- HUD ---------- */
+  #hud {
+    position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+  #hud .panel {
+    position: absolute;
+    background: rgba(8,8,20,.78);
+    border: calc(var(--s) * 1px) solid #6a6aa0;
+    padding: calc(var(--s) * 2px) calc(var(--s) * 3px);
+    font-size: calc(var(--s) * 5px);
+    line-height: 1.35;
+    letter-spacing: calc(var(--s) * .5px);
+    font-weight: bold;
+  }
+  #hud .tl { left: calc(var(--s) * 4px); top: calc(var(--s) * 4px); min-width: calc(var(--s) * 86px); }
+  #hud .tr { right: calc(var(--s) * 4px); top: calc(var(--s) * 4px); text-align: right; }
+  #hud .bl { left: calc(var(--s) * 4px); bottom: calc(var(--s) * 4px); }
+  #hud .br { right: calc(var(--s) * 4px); bottom: calc(var(--s) * 4px); text-align: right; opacity: .75; font-size: calc(var(--s) * 4px); }
+
+  .bar { position: relative; height: calc(var(--s) * 4px); background: #301020; border: 1px solid #7878a8; margin-top: calc(var(--s) * 1px); }
+  .bar > i { position: absolute; left: 0; top: 0; bottom: 0; display: block; background: #e04040; }
+  .bar.sta > i { background: #40c060; }
+  .bar.lo > i { background: #e0a020; }
+  .gold { color: #f8d040; }
+  .dim { color: #9898b8; }
+
+  /* ---------- Overlay menus ---------- */
+  #overlay {
+    position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+    display: none;
+    align-items: center; justify-content: center;
+    background: rgba(6,6,16,.90);
+    text-transform: uppercase;
+  }
+  #overlay.on { display: flex; }
+  .card {
+    width: calc(var(--s) * 210px);
+    max-height: 92%;
+    display: flex; flex-direction: column;
+    background: #101024;
+    border: calc(var(--s) * 1px) solid #8888c0;
+    box-shadow: 0 0 0 calc(var(--s) * 1px) #20204a;
+    padding: calc(var(--s) * 6px);
+    font-size: calc(var(--s) * 6px);
+    line-height: 1.5;
+  }
+  .card h1 { margin: 0 0 calc(var(--s) * 4px); font-size: calc(var(--s) * 10px); letter-spacing: calc(var(--s) * 1px); color: #f8d040; text-align: center; }
+  .card h2 { margin: 0 0 calc(var(--s) * 3px); font-size: calc(var(--s) * 7px); color: #f8f8ff; }
+  .card .sub { text-align: center; color: #9898c0; font-size: calc(var(--s) * 5px); margin-bottom: calc(var(--s) * 4px); }
+  .list { flex: 1; overflow: hidden; margin: calc(var(--s) * 2px) 0; }
+  .row { display: flex; justify-content: space-between; gap: calc(var(--s) * 4px); padding: 0 calc(var(--s) * 2px); white-space: nowrap; }
+  .row > span:first-child { overflow: hidden; text-overflow: ellipsis; }
+  .row.sel { background: #f8d040; color: #101024; }
+  .row.sel .dim, .row.sel .gold { color: #101024; }
+  .row.off { opacity: .35; }
+  .foot { border-top: 1px solid #444477; margin-top: calc(var(--s) * 3px); padding-top: calc(var(--s) * 3px); font-size: calc(var(--s) * 5px); color: #9898c0; text-align: center; }
+  .foot .k { color: #f8d040; }
+  .desc { min-height: calc(var(--s) * 18px); font-size: calc(var(--s) * 5px); color: #a8a8d0; border-top: 1px solid #33335c; padding-top: calc(var(--s) * 3px); }
+
+  #help { font-size: 12px; color: #5a5a78; text-transform: uppercase; letter-spacing: 1px; }
+  #help b { color: #9898c0; }
+</style>
+</head>
+<body>
+
+<div id="wrap">
+  <canvas id="game" width="320" height="180"></canvas>
+  <canvas id="fx"></canvas>
+  <div id="hud"></div>
+  <div id="overlay"></div>
+</div>
+
+<div id="help"></div>
+
+<script src="js/00_core.js"></script>
+<script src="js/08_binds.js"></script>
+<script src="js/05_palette.js"></script>
+<script src="js/06_spritedata.js"></script>
+<script src="js/07_world.js"></script>
+<script src="js/10_audio.js"></script>
+<script src="js/20_data.js"></script>
+<script src="js/30_entity.js"></script>
+<script src="js/31_combat.js"></script>
+<script src="js/32_ai.js"></script>
+<script src="js/50_save.js"></script>
+<script src="js/41_hud.js"></script>
+<script src="js/40_states.js"></script>
+<script src="js/99_main.js"></script>
+</body>
+</html>

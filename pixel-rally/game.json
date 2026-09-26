@@ -1,0 +1,12 @@
+{
+  "slug": "pixel-rally",
+  "title": "Pixel Rally",
+  "description": "Pixel-art arcade racing with drift, boost and multiple tracks.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#ffe14d",
+  "order": 8,
+  "model": "GLM 5.3 Flash",
+  "date": "2026-09"
+}
+

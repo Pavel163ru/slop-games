@@ -1,0 +1,11 @@
+{
+  "slug": "car-reseller",
+  "title": "Car Reseller",
+  "description": "Buy, repair and flip cars in a fast negotiation sim.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#4ade80",
+  "order": 1,
+  "model": "Claude Opus 4.6",
+  "date": "2026-06"
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "river-city-remake",
+  "title": "River City Ransom",
+  "description": "Ремейк NES-классики: уличные драки, магазины, прокачка и разборки за речной город.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#2e7bd6",
+  "order": 9,
+  "model": "Hy4 preview",
+  "date": "2026-09"
+}

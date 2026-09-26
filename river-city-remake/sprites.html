@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>СПРАЙТЫ — Речной город: Разборки</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 0 60px;
+    background: #101018; color: #e8e8f0;
+    font: 12px "Courier New", monospace;
+  }
+  h1 { font-size: 15px; margin: 14px 16px 6px; color: #f8d040; letter-spacing: 2px; }
+  .sub { margin: 0 16px 14px; color: #9898b8; }
+  #bar {
+    position: sticky; top: 0; z-index: 5;
+    background: #1a1a2c; border-bottom: 2px solid #44446a;
+    padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+  }
+  select, button { background: #101020; color: #e8e8f0; border: 1px solid #6a6aa0; font: 12px "Courier New", monospace; padding: 3px 6px; }
+  label { color: #c8c8e8; display: flex; align-items: center; gap: 5px; }
+  b { color: #f8d040; }
+  #prev { display: block; margin: 14px 16px; background: #171724; border: 1px solid #33335c; }
+  h2 { font-size: 13px; margin: 22px 16px 8px; color: #f8d040; letter-spacing: 1px; }
+  #sheet { display: block; margin: 0 16px; background: #171724; border: 1px solid #33335c; }
+  .hint { color: #7878a0; }
+</style>
+</head>
+<body>
+
+<h1>ПРОСМОТР СПРАЙТОВ</h1>
+<p class="sub">
+  Сверху — все анимации выбранного персонажа в движении. Ниже — каждая поза каждого персонажа.
+  Назови номер строки/столбца или имя позы, и я поправлю.
+</p>
+
+<div id="bar">
+  <label>персонаж <select id="spec"></select></label>
+  <label><input type="checkbox" id="flip"> зеркало (лицо влево)</label>
+  <label>скорость <input type="range" id="speed" min="1" max="24" value="9"></label>
+  <label><input type="checkbox" id="ground" checked> линия земли</label>
+  <label><input type="checkbox" id="px"> пиксельная сетка</label>
+  <span class="hint">поза сейчас: <b id="cur">—</b></span>
+</div>
+
+<canvas id="prev" width="900" height="516"></canvas>
+
+<h2>ВСЕ ПОЗЫ × ВСЕ ПЕРСОНАЖИ</h2>
+<canvas id="sheet"></canvas>
+
+<script src="js/00_core.js"></script>
+<script src="js/05_palette.js"></script>
+<script src="js/06_spritedata.js"></script>
+<script>
+(function () {
+  'use strict';
+  var S = G.Sprites, SW = S.SW, SH = S.SH, AX = S.ANCHOR_X, AY = S.ANCHOR_Y;
+
+  var ANIMS = [
+    { name: 'IDLE',   fps: 2,  f: ['idle', 'idle2'] },
+    { name: 'WALK',   fps: 9,  f: ['walk0', 'walk1', 'walk2', 'walk3'] },
+    { name: 'RUN',    fps: 12, f: ['run0', 'run1', 'run2', 'run3'] },
+    { name: 'PUNCH',  fps: 8,  f: ['idle', 'punch1', 'punch2', 'punch3', 'idle', 'idle'] },
+    { name: 'KICK',   fps: 7,  f: ['idle', 'kick', 'kick', 'kickH', 'idle'] },
+    { name: 'JUMP',   fps: 8,  f: ['idle', 'jump', 'jump', 'fall', 'fall', 'idle'] },
+    { name: 'BLOCK',  fps: 3,  f: ['block'] },
+    { name: 'HURT',   fps: 6,  f: ['hurt', 'hurt', 'idle', 'idle'] },
+    { name: 'DOWN',   fps: 4,  f: ['idle', 'down', 'down', 'idle'] },
+    { name: 'SIT',    fps: 2,  f: ['sit'] },
+    { name: 'TECH',   fps: 6,  f: ['charge', 'charge', 'tech', 'tech', 'tech', 'idle'] },
+    { name: 'GRAB',   fps: 6,  f: ['grab', 'grab', 'thrown', 'thrown', 'idle'] },
+    { name: 'CHEER',  fps: 4,  f: ['cheer', 'idle'] }
+  ];
+
+  var specSel = document.getElementById('spec');
+  var specs = Object.keys(G.Specs);
+  specs.forEach(function (s) {
+    var o = document.createElement('option');
+    o.value = s; o.textContent = s;
+    specSel.appendChild(o);
+  });
+  specSel.value = 'alex';
+
+  var flip = document.getElementById('flip');
+  var speed = document.getElementById('speed');
+  var ground = document.getElementById('ground');
+  var gridPx = document.getElementById('px');
+  var cur = document.getElementById('cur');
+
+  /* ---------- маленький отрисовщик ---------- */
+  function draw(ctx, spec, pose, x, feetY, scale, facing, opt) {
+    opt = opt || {};
+    var cv = S.char(spec, pose, false);
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    var w = SW * scale, h = SH * scale;
+    var ox = x - (AX * scale);
+    var oy = feetY - (AY * scale);
+    if (facing < 0) {
+      ctx.translate(x, feetY);
+      ctx.scale(-1, 1);
+      ctx.drawImage(cv, -AX * scale, -AY * scale, w, h);
+      ctx.translate(-x, -feetY);
+      ctx.scale(-1, 1);
+    } else {
+      ctx.drawImage(cv, ox, oy, w, h);
+    }
+    ctx.restore();
+
+    if (opt.grid) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,255,255,.10)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (var i = 0; i <= SW; i++) { ctx.moveTo(ox + i * scale + .5, oy); ctx.lineTo(ox + i * scale + .5, oy + h); }
+      for (var j = 0; j <= SH; j++) { ctx.moveTo(ox, oy + j * scale + .5); ctx.lineTo(ox + w, oy + j * scale + .5); }
+      ctx.stroke();
+      ctx.restore();
+    }
+    if (opt.ground) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(248,208,64,.55)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(ox - 4, feetY + .5); ctx.lineTo(ox + w + 4, feetY + .5); ctx.stroke();
+      ctx.restore();
+    }
+    if (opt.anchor) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(248,64,64,.8)';
+      ctx.beginPath();
+      ctx.moveTo(x - 4, feetY + .5); ctx.lineTo(x + 4, feetY + .5);
+      ctx.moveTo(x + .5, feetY - 4); ctx.lineTo(x + .5, feetY + 4);
+      ctx.stroke(); ctx.restore();
+    }
+  }
+
+  /* ---------- превью анимаций ---------- */
+  var prev = document.getElementById('prev');
+  var pctx = prev.getContext('2d');
+  var SCALE = 4, CW = 146, CH = 168, PER = 6;
+
+  function renderPrev(t) {
+    var spec = specSel.value;
+    var fc = +speed.value;
+    var f = flip.checked ? -1 : 1;
+    var opt = { ground: ground.checked, grid: gridPx.checked, anchor: true };
+    pctx.fillStyle = '#171724';
+    pctx.fillRect(0, 0, prev.width, prev.height);
+    pctx.font = 'bold 11px "Courier New", monospace';
+    pctx.textAlign = 'center';
+
+    var name = '—';
+    for (var i = 0; i < ANIMS.length; i++) {
+      var a = ANIMS[i];
+      var cx = 16 + (i % PER) * CW;
+      var cy = 20 + Math.floor(i / PER) * CH;
+      var idx = Math.floor(t * a.fps) % a.f.length;
+      var pose = a.f[idx];
+      if (i === 0) name = pose;
+      pctx.fillStyle = '#9898c0';
+      pctx.fillText(a.name, cx + CW / 2 - 8, cy);
+      draw(pctx, spec, pose, cx + CW / 2 - 8, cy + 14 + AY * SCALE, SCALE, f, opt);
+    }
+    cur.textContent = name;
+  }
+
+  /* ---------- таблица всех поз ---------- */
+  var sheet = document.getElementById('sheet');
+  var sctx = sheet.getContext('2d');
+  var CELL_W = 104, CELL_H = 118, HEAD = 26, LBL = 112, ZS = 3;
+  var poses = S.poseNames;
+
+  function renderSheet() {
+    var w = LBL + specs.length * CELL_W;
+    var h = HEAD + poses.length * CELL_H;
+    sheet.width = w; sheet.height = h;
+    sheet.style.width = w + 'px';
+    sheet.style.height = h + 'px';
+
+    sctx.fillStyle = '#171724';
+    sctx.fillRect(0, 0, w, h);
+    sctx.imageSmoothingEnabled = false;
+    sctx.textAlign = 'left';
+    sctx.font = 'bold 11px "Courier New", monospace';
+
+    /* шапка: имена персонажей */
+    sctx.fillStyle = '#f8d040';
+    for (var c = 0; c < specs.length; c++) {
+      sctx.fillText(specs[c], LBL + c * CELL_W + 6, 17);
+      sctx.fillStyle = 'rgba(255,255,255,.07)';
+      sctx.fillRect(LBL + c * CELL_W, HEAD, 1, h - HEAD);
+      sctx.fillStyle = '#f8d040';
+    }
+    sctx.strokeStyle = '#33335c';
+    sctx.beginPath(); sctx.moveTo(0, HEAD + .5); sctx.lineTo(w, HEAD + .5); sctx.stroke();
+
+    /* строки: позы */
+    for (var r = 0; r < poses.length; r++) {
+      var y = HEAD + r * CELL_H;
+      if (r % 2) { sctx.fillStyle = 'rgba(255,255,255,.03)'; sctx.fillRect(0, y, w, CELL_H); }
+      sctx.fillStyle = '#c8c8e8';
+      sctx.fillText(poses[r], 6, y + 20);
+      sctx.fillStyle = '#585878';
+      sctx.font = '9px "Courier New", monospace';
+      sctx.fillText('#' + r, 6, y + 34);
+      sctx.font = 'bold 11px "Courier New", monospace';
+
+      for (var cc = 0; cc < specs.length; cc++) {
+        var cx = LBL + cc * CELL_W + CELL_W / 2;
+        var feet = y + 8 + AY * ZS;
+        draw(sctx, specs[cc], poses[r], cx, feet, ZS, 1, { ground: true });
+      }
+      sctx.strokeStyle = 'rgba(255,255,255,.05)';
+      sctx.beginPath(); sctx.moveTo(0, y + CELL_H + .5); sctx.lineTo(w, y + CELL_H + .5); sctx.stroke();
+    }
+  }
+
+  renderSheet();
+  specSel.addEventListener('change', function () { });
+  [flip, ground, gridPx].forEach(function (el) { el.addEventListener('change', function () { }); });
+
+  var t0 = performance.now();
+  (function loop(now) {
+    var t = (now - t0) / 1000 * (+speed.value / 9);
+    renderPrev(t);
+    requestAnimationFrame(loop);
+  })(t0);
+})();
+</script>
+</body>
+</html>

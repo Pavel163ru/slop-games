@@ -1,0 +1,11 @@
+{
+  "slug": "night-survivors",
+  "title": "Night Survivors",
+  "description": "Survive the horde of darkness with auto-firing weapons and meta progression.",
+  "type": "static",
+  "entry": "game.html",
+  "accent": "#a855f7",
+  "order": 4,
+  "model": "Claude Opus 4.8",
+  "date": "2026-06"
+}

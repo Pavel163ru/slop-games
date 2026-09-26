@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11100f">
+  <title>Dungeon Match — демо первого боя</title>
+  <link rel="stylesheet" href="css/game.css">
+  <script src="js/sprites.js" defer></script>
+  <script src="js/demo.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-lockup">
+      <a class="brand" href="index.html">DUNGEON MATCH</a>
+      <span>ДЕМО ПЕРВОГО БОЯ <i>·</i> КРЫСА В ТЕМНОТЕ</span>
+    </div>
+    <nav aria-label="Материалы проекта">
+      <a href="index.html">Полная игра</a>
+      <a href="sprite-viewer.html">Спрайты</a>
+      <a href="GAME_DESIGN.md">Геймдизайн</a>
+      <a href="README.md">README</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <h1 class="sr-only">Крыса в темноте — демо первого боя Dungeon Match</h1>
+    <div class="demo-layout">
+      <aside class="spell-rail" id="spell-rail" aria-label="Заклинания">
+        <p class="rail-title">МАГИЯ</p>
+        <div class="rail-spells">
+          <button class="rail-spell" type="button" data-spell-action="fireball" aria-label="Фаербол: 12 урона и ожог">
+            <img src="assets/sprites/spell-fireball.svg" alt="">
+            <span class="rail-spell-name">Фаербол</span>
+            <span class="rail-spell-effect">12 урона · ожог</span>
+            <span class="rail-spell-cost">15 маны</span>
+          </button>
+          <button class="rail-spell" type="button" data-spell-action="heal" aria-label="Лечение: восстановить 15 здоровья">
+            <img src="assets/sprites/spell-heal.svg" alt="">
+            <span class="rail-spell-name">Лечение</span>
+            <span class="rail-spell-effect">+15 здоровья</span>
+            <span class="rail-spell-cost">12 маны</span>
+          </button>
+          <button class="rail-spell" type="button" data-spell-action="shield" aria-label="Каменный щит: 10 брони">
+            <img src="assets/sprites/spell-stone-shield.svg" alt="">
+            <span class="rail-spell-name">Каменный щит</span>
+            <span class="rail-spell-effect">+10 брони</span>
+            <span class="rail-spell-cost">10 маны</span>
+          </button>
+        </div>
+        <div class="rail-items" aria-label="Расходники и управление">
+          <button class="rail-item" type="button" data-item-action="potion" aria-label="Использовать зелье">
+            <img src="assets/sprites/token-potion.svg" alt="">
+            <span>Зелье +25</span><small id="rail-potions">1</small>
+          </button>
+          <button class="rail-item" type="button" data-item-action="hint" aria-label="Показать подсказку"><b>✦</b><span>Подсказка</span></button>
+          <button class="rail-item" type="button" data-item-action="restart" aria-label="Начать бой заново"><b>↻</b><span>Сбросить бой</span></button>
+        </div>
+        <p class="rail-mana" id="rail-mana">МАНА · 0</p>
+      </aside>
+      <section class="game-frame" aria-label="Игровое поле">
+        <canvas id="game-canvas" width="512" height="840" aria-label="Демо боя Dungeon Match">
+          Для игры нужен браузер с поддержкой HTML Canvas.
+        </canvas>
+      </section>
+
+      <aside class="play-notes">
+        <section class="note-card">
+          <p class="note-label">ЦЕЛЬ</p>
+          <h2>Победи крысу</h2>
+          <p>У героя 50 HP. У крысы 40 HP, а её следующий удар заранее показан над полем.</p>
+        </section>
+        <section class="note-card">
+          <p class="note-label">ХОД</p>
+          <h2>Выбери пару</h2>
+          <p>Кликни фишку, затем соседнюю по горизонтали или вертикали. Свап без матча отменится и не потратит ход.</p>
+        </section>
+        <section class="note-card resource-key">
+          <p class="note-label">ФИШКИ</p>
+          <ul>
+            <li><span class="key-color sword"></span>Меч — урон</li>
+            <li><span class="key-color shield"></span>Щит — броня</li>
+            <li><span class="key-color mana"></span>Мана — заклинания</li>
+            <li><span class="key-color potion"></span>Зелье — лечение</li>
+            <li><span class="key-color gold"></span>Золото — награда</li>
+          </ul>
+        </section>
+        <section class="note-card">
+          <p class="note-label">ТАКТИКА</p>
+          <h2>Длинные матчи</h2>
+          <p>Матч из 4+ фишек даёт усиленный эффект и пропускает атаку крысы. Щиты-4 ослабляют её, мечи-4 накладывают кровотечение. Фаербол наносит 12 урона и ожог, лечение даёт +15 HP, каменный щит — +10 брони. Заклинание тратит ход.</p>
+        </section>
+        <p class="offline-note"><span></span>Демо запускается офлайн, без сервера.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>Демо первого боя · локальный HTML + JavaScript</span>
+    <a href="sprite-viewer.html">Открыть просмотрщик спрайтов →</a>
+  </footer>
+</body>
+</html>

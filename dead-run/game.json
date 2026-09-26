@@ -1,0 +1,11 @@
+{
+  "slug": "dead-run",
+  "title": "Dead Run",
+  "description": "Outrun the zombie horde through procedurally generated streets.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#ef4444",
+  "order": 2,
+  "model": "GPT-5.4 mini",
+  "date": "2026-05"
+}

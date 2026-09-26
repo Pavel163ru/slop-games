@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11100f">
+  <title>Dungeon Match — Подземелье</title>
+  <link rel="stylesheet" href="css/full-game.css">
+  <script src="js/sprites.js" defer></script>
+  <script src="js/board.js" defer></script>
+  <script src="js/game.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">DUNGEON MATCH</a>
+    <nav aria-label="Страницы игры">
+      <a href="demo.html">Демо первого боя</a>
+      <a href="sprite-viewer.html">Спрайты</a>
+      <button id="mute-button" type="button" aria-label="Переключить звук">ЗВУК: ВКЛ</button>
+    </nav>
+  </header>
+
+  <main class="game-shell">
+    <h1 class="sr-only">Dungeon Match — приключение в подземелье</h1>
+    <div class="game-layout" id="game-layout">
+      <aside class="spell-rail" id="spell-rail" aria-label="Заклинания и предметы">
+        <p class="rail-title">ЗАКЛИНАНИЯ</p>
+        <div class="rail-spells" id="rail-spells"></div>
+        <p class="rail-title">ПРЕДМЕТЫ</p>
+        <div class="rail-items">
+          <button class="rail-item" type="button" data-item-action="potion"><img src="assets/sprites/token-potion.svg" alt=""><span>Зелье</span><small id="rail-potions">0</small></button>
+          <button class="rail-item" type="button" data-item-action="bomb"><img src="assets/sprites/item-bomb.svg" alt=""><span>Бомба</span><small id="rail-bombs">0</small></button>
+          <button class="rail-item" type="button" data-item-action="shuffle"><img src="assets/sprites/item-shuffle.svg" alt=""><span>Перемешать</span><small id="rail-shuffles">0</small></button>
+          <button class="rail-item" type="button" data-item-action="hint"><b>✦</b><span>Подсказка</span></button>
+        </div>
+        <p class="rail-mana" id="rail-mana">МАНА · 0</p>
+      </aside>
+      <div class="game-frame" id="game-frame">
+        <canvas id="game-canvas" width="512" height="940" aria-label="Игра Dungeon Match">
+          Для игры нужен браузер с поддержкой HTML Canvas.
+        </canvas>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>Офлайн-приключение · прогресс сохраняется в этом браузере</span>
+    <a href="GAME_DESIGN.md">Правила игры</a>
+  </footer>
+</body>
+</html>

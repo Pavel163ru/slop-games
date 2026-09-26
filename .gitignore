@@ -1,0 +1,17 @@
+# Secrets
+.env
+
+# Dependencies & build output (any depth)
+node_modules/
+dist/
+
+# Scratch / drafts / local tooling
+/temp/
+.freebuff/
+
+# Local tool state
+.claude/
+
+# OS junk
+.DS_Store
+Thumbs.db

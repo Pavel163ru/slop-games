@@ -1,0 +1,11 @@
+{
+  "slug": "dungeon-match",
+  "title": "Dungeon Match (Remake)",
+  "description": "Ремейк Match-3 RPG в тёмном подземелье: тактический бой с предсказанным уроном, 8 заклинаний, SVG-графика и битва с Личем.",
+  "type": "static",
+  "entry": "index.html",
+  "accent": "#8b5cf6",
+  "order": 7,
+  "model": "GPT-6 Luna",
+  "date": "2026-09"
+}
