@@ -33,8 +33,17 @@ All generated paths are **relative**, so the site works on any static host and i
 
 ```bash
 npm run build     # build dist/
+npm run deploy    # upload dist/ to FTP/FTPS (configure .env first)
 npx serve dist    # local preview (any static server works)
 ```
+
+On Windows there are convenience wrappers — double-click them or run from a terminal:
+
+| Script | What it does |
+| --- | --- |
+| `build.bat` | Builds `dist/` (runs `build.mjs`) |
+| `run.bat` | Builds, then serves the site at `http://localhost:4173` via the built-in zero-dependency static server (`serve.mjs`) |
+| `deploy.bat` | Uploads `dist/` via FTP/FTPS (runs `deploy.mjs`, pauses so you can read the error if the deploy fails) |
 
 Then deploy the `dist/` folder to any static host.
 
